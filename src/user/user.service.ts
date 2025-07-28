@@ -24,6 +24,14 @@ export class UserService {
     return user;
   }
 
+  public async getAll() {
+    return this.prismaService.user.findMany({
+      include: {
+        accounts: true,
+      },
+    });
+  }
+
   public async findByEmail(email: string) {
     const user = await this.prismaService.user.findUnique({
       where: {

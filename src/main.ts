@@ -50,7 +50,7 @@ async function bootstrap() {
       saveUninitialized: false,
       store: new RedisStore({
         client: redisClient,
-        prefix: config.getOrThrow('SESSION_FOLDER') || 'sess:',
+        prefix: config.getOrThrow('SESSION_FOLDER'),
       }),
       cookie: {
         domain: config.getOrThrow('SESSION_DOMAIN'),
