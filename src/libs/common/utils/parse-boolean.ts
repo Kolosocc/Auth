@@ -1,4 +1,4 @@
-function parseBoolean(value: string): boolean {
+export function parseBoolean(value: string): boolean {
   if (typeof value !== 'string') {
     if (typeof value === 'boolean') {
       return value;
