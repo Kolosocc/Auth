@@ -5,15 +5,24 @@ import { AuthController } from './auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GoogleRecaptchaModule } from '@nestlab/google-recaptcha';
 import { getRecaptchaConfig } from 'src/config/recaptcha.config';
+import { ProviderModule } from './provider/provider.module';
+import { getProviderConfig } from 'src/config/providers.config';
+import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
   imports: [
+    PrismaModule, // Добавляем PrismaModule для предоставления PrismaService
     UserModule,
     ConfigModule,
     GoogleRecaptchaModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: getRecaptchaConfig,
+    }),
+    ProviderModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getProviderConfig, // Используем getProviderConfig
     }),
   ],
   controllers: [AuthController],

@@ -1,5 +1,5 @@
 import {
-  ValidationArguments,
+  type ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
@@ -10,7 +10,7 @@ export class IsPasswordsMatchingConstraint
 {
   validate(passwordRepeat: string, args: ValidationArguments) {
     const dto = args.object as any;
-    const password = dto.password; // ← получаем значение поля password
+    const password = dto.password;
     return password === passwordRepeat;
   }
 

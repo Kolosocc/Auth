@@ -7,7 +7,7 @@ import IORedis from 'ioredis';
 import * as session from 'express-session';
 import * as ms from 'ms';
 import { type StringValue } from 'ms';
-import RedisStore from 'connect-redis'; // Изменено!
+import RedisStore from 'connect-redis';
 import { parseBoolean } from './libs/common/utils/parse-boolean';
 
 async function bootstrap() {
@@ -63,12 +63,12 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: config.getOrThrow('ALLOWED_ORIGIN'),
+    origin: config.getOrThrow('ALLOWED_ORIGIN'), // Должно быть http://localhost:4000
     credentials: true,
     exposedHeaders: ['set-cookie'],
   });
 
-  await app.listen(config.getOrThrow('APPLICATION_PORT') ?? 3000);
+  await app.listen(config.getOrThrow('APPLICATION_PORT') ?? 4000);
 }
 
 bootstrap();
