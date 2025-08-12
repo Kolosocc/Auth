@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
+import * as express from 'express'; // Добавляем express
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 import IORedis from 'ioredis';
@@ -15,7 +16,9 @@ async function bootstrap() {
 
   const config = app.get(ConfigService);
 
-  // Правильная конфигурация Redis
+  // Явно добавляем парсер JSON
+  app.use(express.json());
+
   const redisClient = new IORedis({
     host: config.get('REDIS_HOST', 'localhost'),
     port: config.get('REDIS_PORT', 6379),
@@ -63,7 +66,7 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: config.getOrThrow('ALLOWED_ORIGIN'), // Должно быть http://localhost:4000
+    origin: config.getOrThrow('ALLOWED_ORIGIN'),
     credentials: true,
     exposedHeaders: ['set-cookie'],
   });

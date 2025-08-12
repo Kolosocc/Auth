@@ -56,12 +56,13 @@ model Token {
   id String @id @default(uuid())
 
   email String
-  token String    @unique
+  token String
   type  TokenType
 
   expiresIn DateTime @map("expires_in")
   createdAt DateTime @default(now()) @map("created_at")
 
+  @@unique([token, type])
   @@index([token]) // Ускоряет поиск по уникальному токену
   @@index([type, email]) // Ускоряет проверку токена по типу и email
   @@map("tokens")

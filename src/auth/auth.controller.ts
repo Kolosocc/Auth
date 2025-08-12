@@ -14,7 +14,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import type { RegisterDto } from './dto/register.dto';
+import { RegisterDto } from './dto/register.dto';
 import { Response, type Request as TypeRequest } from 'express';
 import type { LoginDto } from './dto/login.dto';
 import { Recaptcha } from '@nestlab/google-recaptcha';
@@ -31,7 +31,7 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  @Recaptcha()
+  // @Recaptcha()
   @HttpCode(HttpStatus.OK)
   async register(@Request() req: TypeRequest, @Body() dto: RegisterDto) {
     return this.authService.register(req, dto);
@@ -56,7 +56,6 @@ export class AuthController {
     }
 
     await this.authService.extractProfileFromCode(req, provider, code);
-    console.log(this.configService.getOrThrow('ALLOWED_ORIGIN'));
     return res.redirect(
       `${this.configService.getOrThrow('ALLOWED_ORIGIN')}/dashboard/settings`
     );

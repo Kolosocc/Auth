@@ -26,7 +26,6 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Get('by-id/:id')
   public async findById(@Param('id') userId: string) {
-    console.log(userId);
     return this.userService.findById(userId);
   }
 }

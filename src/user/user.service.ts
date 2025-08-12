@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { AuthMethod, User } from '@prisma/client';
 import { hash } from 'argon2';
+import { NotFoundError } from 'rxjs';
 
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -59,7 +60,7 @@ export class UserService {
     });
 
     if (existing) {
-      return existing;
+      new ConflictException('User with this email already exists');
     }
 
     const user = await this.prismaService.user.create({

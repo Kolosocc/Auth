@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
@@ -9,9 +9,11 @@ import { ProviderModule } from './provider/provider.module';
 import { getProviderConfig } from 'src/config/providers.config';
 import { PrismaModule } from 'src/prisma/prisma.module';
 
+import { EmailConfirmationModule } from './email-confirmation/email-confirmation.module';
+
 @Module({
   imports: [
-    PrismaModule, // Добавляем PrismaModule для предоставления PrismaService
+    PrismaModule,
     UserModule,
     ConfigModule,
     GoogleRecaptchaModule.forRootAsync({
@@ -22,10 +24,12 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     ProviderModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: getProviderConfig, // Используем getProviderConfig
+      useFactory: getProviderConfig,
     }),
+    forwardRef(() => EmailConfirmationModule),
   ],
   controllers: [AuthController],
   providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}
