@@ -70,7 +70,7 @@ export class AuthService {
     const account = await this.prismaService.account.findFirst({
       where: {
         provider: profile.provider,
-        id: profile.id,
+        id: profile.id.toString(),
       },
     });
 
@@ -99,7 +99,9 @@ export class AuthService {
           provider: profile.provider,
           accessToken: profile.access_token,
           refreshToken: profile.refresh_token,
-          expiresAt: profile.expires_at,
+          expiresAt: profile.expires_at
+            ? BigInt(profile.expires_at)
+            : BigInt(Date.now() + 3600 * 1000),
         },
       });
     }

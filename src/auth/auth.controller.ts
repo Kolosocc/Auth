@@ -43,7 +43,7 @@ export class AuthController {
     return this.authService.login(req, dto);
   }
 
-  @Get('/api/auth/callback/:provider')
+  @Get('/oauth/callback/:provider')
   @UseGuards(AuthProviderGuard)
   public async callback(
     @Req() req: TypeRequest,
@@ -56,16 +56,15 @@ export class AuthController {
     }
 
     await this.authService.extractProfileFromCode(req, provider, code);
-
+    console.log(this.configService.getOrThrow('ALLOWED_ORIGIN'));
     return res.redirect(
       `${this.configService.getOrThrow('ALLOWED_ORIGIN')}/dashboard/settings`
     );
   }
 
-  @Get('/api/auth/connect/:provider')
+  @Get('/oauth/connect/:provider')
   @UseGuards(AuthProviderGuard)
   public async connect(@Param('provider') provider: string) {
-    console.log(`Handling /api/auth/connect/${provider}`);
     const providerInstance = this.providerService.findByService(provider);
     if (!providerInstance) {
       throw new BadRequestException(`Provider ${provider} not found`);

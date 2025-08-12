@@ -98,8 +98,8 @@ export class BaseOAuthService {
   }
 
   getRedirectUrl(): string {
-    const redirectUri = `${this._baseUrl}/api/auth/callback/${this.options.name}`;
-    console.log('Generated redirect_uri:', redirectUri); // Отладочный вывод
+    const redirectUri = `${this._baseUrl}/auth/oauth/callback/${this.options.name}`;
+    console.log('Generated redirect_uri:', redirectUri, this._baseUrl); // Отладочный вывод
     return redirectUri;
   }
 

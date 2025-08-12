@@ -53,6 +53,15 @@ export class UserService {
     method: AuthMethod,
     isVerified: boolean
   ): Promise<User> {
+    const existing = await this.prismaService.user.findUnique({
+      where: { email },
+      include: { accounts: true },
+    });
+
+    if (existing) {
+      return existing;
+    }
+
     const user = await this.prismaService.user.create({
       data: {
         email,

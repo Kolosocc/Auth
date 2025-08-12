@@ -28,6 +28,6 @@ export const getProviderConfig = async (
       }),
     ],
   };
-  console.log('Provider config:', config); // Отладочный вывод
+
   return config;
 };
